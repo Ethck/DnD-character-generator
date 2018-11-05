@@ -3,7 +3,7 @@ Generator for Dungeons and Dragons 5th edition characters with auto-generated ch
 
 ## Currently the generator supports:
 * Random rolled stats.
-* Random Name
+* Random Name (Only Human names thus far)
 * Random Race
 * Random Class
 * Random Background
