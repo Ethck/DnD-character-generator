@@ -6,9 +6,9 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
 import java.io.IOException;
 
-public class main {
+public class GenerateCharacter {
     public static void main (String[] args) throws IOException {
-        playerCharacter PC = new playerCharacter();
+        PlayerCharacter PC = new PlayerCharacter();
         File blankCharacterSheet = new File("src/_blank.pdf");
         PDDocument doc = PDDocument.load(blankCharacterSheet);
         PDPage titlePage = doc.getPage(0);
@@ -19,7 +19,7 @@ public class main {
 
         // Class & Level
         titleStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-        addText(titleStream, 270, 730, PC.playerClass + "  1");
+        addText(titleStream, 270, 730, PC.playerClass + "  " + PC.level);
 
         // Race
         addText(titleStream, 270, 704, PC.race);
@@ -56,12 +56,23 @@ public class main {
         addNumTextWithOffset(titleStream, 50, 331, PC.wisMod, singleStatOffset);
         addNumTextWithOffset(titleStream, 50, 262, PC.chaMod, singleStatOffset);
 
+        // Add other large numbers
+        addText(titleStream, 300, 630, "" + PC.initiative);
+        addText(titleStream, 103, 609, "" + PC.proficiency);
+
+        // Back to small text
+        titleStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+        addText(titleStream, 260, 465, "" + PC.hitDice);
+
         titleStream.endText();
         titleStream.close();
 
+        File characterFolder = new File("generatedCharacters/");
+        if (!characterFolder.exists()) {
+            characterFolder.mkdir();
+        }
 
-
-        doc.save("generatedCharacters/" + PC.name + ".pdf");
+        doc.save(characterFolder.getName() + "/" + PC.name + ".pdf");
         doc.close();
     }
 

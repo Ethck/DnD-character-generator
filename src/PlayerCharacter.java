@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class playerCharacter {
+public class PlayerCharacter {
     String name;
     int strength;
     int dexterity;
@@ -18,10 +18,10 @@ public class playerCharacter {
     int charisma;
     int strMod, dexMod, conMod, intMod, wisMod, chaMod;
     String background, playerClass, alignment, playerName, race, personality, feats, bonds, flaws;
-    int AC, initiative, speed, HP, hitDice, level, inspiration, proficiency, perception;
+    int AC, initiative, speed, HP, hitDice, level, proficiency, perception;
     private Random rand = new Random();
 
-    public playerCharacter() throws IOException{
+    public PlayerCharacter() throws IOException{
         this.strength = genStat();
         this.dexterity = genStat();
         this.constitution = genStat();
@@ -40,6 +40,11 @@ public class playerCharacter {
         this.race = genRace();
         this.name = genName();
         this.background = genBackground();
+        this.level = 1;
+
+        this.hitDice = this.level;
+        this.proficiency = genProficiency();
+        this.initiative = this.dexMod;
     }
 
     private int genStat() {
@@ -86,6 +91,10 @@ public class playerCharacter {
                 "Urban Bounty Hunter", "Urchin", "Uthgardt Tribe Member",
                 "Waterdhavian Noble"));
         return backgrounds.get(rand.nextInt(backgrounds.size()));
+    }
+
+    private int genProficiency() {
+        return 2 + (this.level - 1) / 4;
     }
 
     private String genName() throws IOException {
