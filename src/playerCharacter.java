@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,7 +22,6 @@ public class playerCharacter {
     private Random rand = new Random();
 
     public playerCharacter() throws IOException{
-        this.name = genName();
         this.strength = genStat();
         this.dexterity = genStat();
         this.constitution = genStat();
@@ -38,6 +38,7 @@ public class playerCharacter {
 
         this.playerClass = genClass();
         this.race = genRace();
+        this.name = genName();
         this.background = genBackground();
     }
 
@@ -88,7 +89,22 @@ public class playerCharacter {
     }
 
     private String genName() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("data/humanNames.txt"));
-        return lines.get(rand.nextInt(lines.size()));
+       File[] data = new File("data/").listFiles();
+
+       if (data != null) {
+           for (File s : data) {
+               // If filename before Names.* is the race name, read it.
+               if (s.getName().replaceAll("Names.*", "")
+                       .equalsIgnoreCase(this.race)){
+                   List<String> lines = Files.readAllLines(
+                           Paths.get("data/" + this.race.toLowerCase()
+                                   + "Names.txt"));
+                   return lines.get(rand.nextInt(lines.size()));
+               }
+           }
+       }
+
+       return "Something's not quite right...";
+
     }
 }

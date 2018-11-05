@@ -17,10 +17,23 @@ public class main {
 
         titleStream.beginText();
 
+        // Class & Level
+        titleStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+        addText(titleStream, 270, 730, PC.playerClass + "  1");
+
+        // Race
+        addText(titleStream, 270, 704, PC.race);
+
+
+
+        // Background
+        addText(titleStream, 383, 730, PC.background);
+
         // Character name
         titleStream.setFont(PDType1Font.TIMES_ROMAN, 18);
         addText(titleStream, 70, 715, PC.name);
-        System.out.println("Creating " + PC.name + " now!");
+        System.out.println("Creating " + PC.name + " the " + PC.background +
+                " " + PC.race + " " +PC.playerClass + " now!");
 
         titleStream.setFont(PDType1Font.TIMES_ROMAN, 12);
 
@@ -43,15 +56,6 @@ public class main {
         addNumTextWithOffset(titleStream, 50, 331, PC.wisMod, singleStatOffset);
         addNumTextWithOffset(titleStream, 50, 262, PC.chaMod, singleStatOffset);
 
-        // Class & Level
-        titleStream.setFont(PDType1Font.TIMES_ROMAN, 12);
-        addText(titleStream, 270, 730, PC.playerClass + "  1");
-
-        // Race
-        addText(titleStream, 270, 704, PC.race);
-
-        // Background
-        addText(titleStream, 383, 730, PC.background);
         titleStream.endText();
         titleStream.close();
 
