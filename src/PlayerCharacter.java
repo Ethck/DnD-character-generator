@@ -17,7 +17,7 @@ public class PlayerCharacter {
     int wisdom;
     int charisma;
     int strMod, dexMod, conMod, intMod, wisMod, chaMod;
-    String background, playerClass, alignment, playerName, race, personality, feats, bonds, flaws;
+    String background, playerClass, alignment, playerName, race, personality, ideals, bonds, flaws;
     int AC, initiative, speed, HP, hitDice, level, proficiency, perception;
     private Random rand = new Random();
 
@@ -37,14 +37,19 @@ public class PlayerCharacter {
         this.chaMod = genMod(this.charisma);
 
         this.playerClass = genClass();
-        this.race = genRace();
+        this.race = getRandLineFromFile("data/races.txt");
         this.name = genName();
-        this.background = genBackground();
+        this.background = getRandLineFromFile("data/backgrounds.txt");
         this.level = 1;
 
         this.hitDice = this.level;
         this.proficiency = genProficiency();
         this.initiative = this.dexMod;
+
+        this.personality = getRandLineFromFile("data/personalityTraits.txt");
+        this.bonds = getRandLineFromFile("data/bonds.txt");
+        this.flaws = getRandLineFromFile("data/flaws.txt");
+        this.ideals = getRandLineFromFile("data/ideals.txt");
     }
 
     private int genStat() {
@@ -72,33 +77,12 @@ public class PlayerCharacter {
         return classes.get(rand.nextInt(classes.size()));
     }
 
-    private String genRace() {
-        List<String> races = new ArrayList<String>(Arrays.asList(
-                "Dragonborn", "Dwarf", "Elf", "Gnome", "Half-Elf",
-                "Half-Orc", "Halfling", "Human", "Tiefling"));
-        return races.get(rand.nextInt(races.size()));
-    }
-
-    private String genBackground() {
-        List<String> backgrounds = new ArrayList<String>(Arrays.asList(
-                "Acolyte", "Anthropologist", "Archaeologist", "Charlatan",
-                "CityWatch", "Clan Crafter", "Cloistered Scholar", "Courtier",
-                "Criminal", "Entertainer", "Faction Agent", "Far Traveler",
-                "Folk Hero", "Gladiator", "Guild Artisan", "Guild Merchant",
-                "Haunted One", "Hermit", "Inheritor", "Investigator", "Knight",
-                "Knight of the Order", "Mercenary Veteran", "Noble",
-                "Outlander", "Pirate", "Sage", "Sailor", "Soldier", "Spy",
-                "Urban Bounty Hunter", "Urchin", "Uthgardt Tribe Member",
-                "Waterdhavian Noble"));
-        return backgrounds.get(rand.nextInt(backgrounds.size()));
-    }
-
     private int genProficiency() {
         return 2 + (this.level - 1) / 4;
     }
 
     private String genName() throws IOException {
-       File[] data = new File("data/").listFiles();
+       File[] data = new File("data/names").listFiles();
 
        if (data != null) {
            for (File s : data) {
@@ -106,7 +90,7 @@ public class PlayerCharacter {
                if (s.getName().replaceAll("Names.*", "")
                        .equalsIgnoreCase(this.race)){
                    List<String> lines = Files.readAllLines(
-                           Paths.get("data/" + this.race.toLowerCase()
+                           Paths.get("data/names/" + this.race.toLowerCase()
                                    + "Names.txt"));
                    return lines.get(rand.nextInt(lines.size()));
                }
@@ -115,5 +99,10 @@ public class PlayerCharacter {
 
        return "Something's not quite right...";
 
+    }
+
+    private String getRandLineFromFile(String path) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(path));
+        return lines.get(rand.nextInt(lines.size()));
     }
 }
