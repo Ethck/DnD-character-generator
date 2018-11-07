@@ -64,6 +64,12 @@ public class GenerateCharacter {
         titleStream.setFont(PDType1Font.TIMES_ROMAN, 12);
         addText(titleStream, 260, 465, "" + PC.hitDice);
 
+        // The personality box allows for 32 character long lines.
+        addTextWithWordWrap(titleStream, 415, 645, 32, PC.personality);
+        addTextWithWordWrap(titleStream, 415, 575, 32, PC.ideals);
+        addTextWithWordWrap(titleStream, 415, 520, 32, PC.bonds);
+        addTextWithWordWrap(titleStream, 415, 465, 32, PC.flaws);
+
         titleStream.endText();
         titleStream.close();
 
@@ -100,5 +106,25 @@ public class GenerateCharacter {
         stream.newLineAtOffset(x,y);
         stream.showText(response);
         stream.newLineAtOffset(-x, -y);
+    }
+
+    private static void addTextWithWordWrap(PDPageContentStream stream, int x, int y, int maxLength, String text)
+                                            throws IOException {
+        String temp = "";
+        while (text.length() > 0) {
+            if (text.length() > maxLength) {
+                temp = text.substring(0, maxLength);
+                text = text.substring(temp.length());
+            } else {
+                temp = text;
+                text = "";
+            }
+
+            stream.newLineAtOffset(x,y);
+            stream.showText(temp);
+            stream.newLineAtOffset(-x,-y);
+            y -= 12;
+
+        }
     }
 }

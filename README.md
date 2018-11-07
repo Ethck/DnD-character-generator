@@ -8,6 +8,7 @@ Generator for Dungeons and Dragons 5th edition characters with auto-generated ch
 * Random Class
 * Random Background
 * Stat Modifiers
+* Random Personality, Bonds, Flaws, and Ideals
 
 ## TODO:
 * Approiate Gear
